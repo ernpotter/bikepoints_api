@@ -15,9 +15,8 @@ while current_try<max_tries:
         #will error if the status code is not 200
         response.raise_for_status()
 
-        data = response.json()
-
         #will error if no json is returned from the API call
+        data = response.json()
         if len(data)<50:
             raise Exception('json returned too short')
         
