@@ -1,1 +1,1 @@
-# bike_api
+# bikepoints_api
