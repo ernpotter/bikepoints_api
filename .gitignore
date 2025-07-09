@@ -2,3 +2,4 @@
 .env
 data
 *.json
+bikepoints_api.code-workspace
