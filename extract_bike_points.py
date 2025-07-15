@@ -3,55 +3,60 @@ import time
 from datetime import datetime
 import requests
 
-response = requests.get('https://api.tfl.gov.uk/BikePoint')
 
-#set up wait and try again mechanic
-max_tries = 3
-current_try = 0
-wait_time = 60
+# creating a fcuntion for this entire script
+def extract_bikes():
+    response = requests.get('https://api.tfl.gov.uk/BikePoint')
 
-while current_try<max_tries:
-    try:
-        #will error if the status code is not 200
-        response.raise_for_status()
+    #set up wait and try again mechanic
+    max_tries = 3
+    current_try = 0
+    wait_time = 60
 
-        #will error if no json is returned from the API call
-        data = response.json()
-        if len(data)<50:
-            raise Exception('json returned too short')
-        
-        #setting up to test if data is within 2 days of today, otherwise the API might be stale
-        now = datetime.now()
-        modified_dates = []
-        for item in data:
-            for prop in item.get("additionalProperties", []):
-                if "modified" in prop:
-                    modified_dates.append(prop["modified"])
-        max_modified_date = datetime.strptime(max(modified_dates),'%Y-%m-%dT%H:%M:%S.%fZ')
-        delta = now-max_modified_date
+    while current_try<max_tries:
+        try:
+            #will error if the status code is not 200
+            response.raise_for_status()
 
-        #will error if the API is stale
-        if  delta.days > 2:
-            raise Exception('Stale data, oh no')
+            #will error if no json is returned from the API call
+            data = response.json()
+            if len(data)<50:
+                raise Exception('json returned too short')
+            
+            #setting up to test if data is within 2 days of today, otherwise the API might be stale
+            now = datetime.now()
+            modified_dates = []
+            for item in data:
+                for prop in item.get("additionalProperties", []):
+                    if "modified" in prop:
+                        modified_dates.append(prop["modified"])
+            max_modified_date = datetime.strptime(max(modified_dates),'%Y-%m-%dT%H:%M:%S.%fZ')
+            delta = now-max_modified_date
 
-        #outputting the file as a json in the data folder
-        filename = now.strftime('%Y-%m-%d_%H-%M-%S')
-        filepath = 'data/' + filename + '.json'
-        with open(filepath, 'w') as file:
-            json.dump(data, file, indent=2)
-        break
+            #will error if the API is stale
+            if  delta.days > 2:
+                raise Exception('Stale data, oh no')
 
-    except requests.exceptions.RequestException as e:
-        print(e)
-    except Exception as e:
-        print(e)
-    except:
-        print('Oops')
+            #outputting the file as a json in the data folder
+            filename = now.strftime('%Y-%m-%d_%H-%M-%S')
+            filepath = 'data/' + filename + '.json'
+            with open(filepath, 'w') as file:
+                json.dump(data, file, indent=2)
+            print('Ran successfully')
+            break
 
-    #while loop mechanism to make the script wait before trying again
-    current_try += 1
-    print('waiting')
-    time.sleep(wait_time)
+        except requests.exceptions.RequestException as e:
+            print(e)
+        except Exception as e:
+            print(e)
+        except:
+            print('Oops')
 
-if current_try == max_tries:
-    print('Too many tries')
+        #while loop mechanism to make the script wait before trying again
+        current_try += 1
+        print('waiting')
+        time.sleep(wait_time)
+
+    if current_try == max_tries:
+        print('Too many tries')
+
