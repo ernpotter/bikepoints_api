@@ -2,4 +2,5 @@
 .env
 data
 *.json
-bikepoints_api.code-workspace
+bikepoints_api
+__pycache__
