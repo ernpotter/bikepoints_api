@@ -38,7 +38,7 @@ while current_try<max_tries:
         filename = now.strftime('%Y-%m-%d_%H-%M-%S')
         filepath = 'data/' + filename + '.json'
         with open(filepath, 'w') as file:
-            json.dump(data, file)
+            json.dump(data, file, indent=2)
         break
 
     except requests.exceptions.RequestException as e:

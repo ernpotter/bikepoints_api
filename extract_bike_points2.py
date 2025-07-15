@@ -41,7 +41,7 @@ while current_try < max_tries:
         filename = now.strftime('%Y-%m-%d_%H-%M-%S')
         filepath = 'data/' + filename + '.json'
         with open(filepath, 'w') as file: # This opens the file at that path for writing ('w')
-            json.dump(data, file) # This writes the data into the file in JSON format.
+            json.dump(data, file, indent=2) # This writes the data into the file in JSON format.
         
         break   # end the while loop
 
