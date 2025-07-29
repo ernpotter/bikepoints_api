@@ -20,8 +20,18 @@ def load_bikes():
     )
 
     # figuring out the file to upload to s3
-    try: 
-        file = os.listdir('data')[0] # tell us what is in the data folder. checking if its a file. looking for the first one.
+    try:
+
+        # List files in the 'data' folder, excluding '.gitkeep'
+        valid_files = [f for f in os.listdir('data') if f != '.gitkeep' and os.path.isfile(os.path.join('data', f))]
+
+        if not valid_files:
+            print('No valid files to upload :(')
+            return
+        
+        # Take the first valid file
+        file = valid_files[0] # tell us what is in the data folder. checking if its a file. looking for the first one.
+        #file = os.listdir('data')[0] 
         filename = 'data/'+file
         s3file = 'bike-point/'+file
         try:
