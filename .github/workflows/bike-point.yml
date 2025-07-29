@@ -1,0 +1,35 @@
+# This is a basic script that extracts and loads the bike point main.py script
+
+name: Bike Point Ingestion
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or it will also run every hour.
+on:
+  schedule: 
+    - cron: '0 * * * *'
+  workflow_dispatch:
+  
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+    environment: Bike Point Environment DES3 #setup to mirror our .env file
+    steps:
+      - name: Checkout the repo #any commits during the run won't interfere 
+        uses: actions/checkout@v2
+
+      - name: setup python #make sure the python version GitHub uses is the same as our virtual environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: install packages
+        run: pip install -r requirements.txt
+
+      - name: run pyhton script
+        env:
+          aws_access: ${{secrets.ACCESS_KEY}}
+          aws_secret: ${{secrets.SECRET_ACCESS_KEY}}
+          bucket: ${{secrets.AWS_BUCKET_NAME}}
+        run: python main.py
