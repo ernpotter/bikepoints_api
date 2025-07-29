@@ -1,6 +1,5 @@
 .venv
 .env
-data
 *.json
 bikepoints_api
 __pycache__
