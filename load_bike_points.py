@@ -21,7 +21,7 @@ def load_bikes():
 
     # figuring out the file to upload to s3
     try: 
-        file = os.listdir('data')[1] # tell us what is in the data folder. checking if its a file. looking for the second one.
+        file = os.listdir('data')[0] # tell us what is in the data folder. checking if its a file. looking for the first one.
         filename = 'data/'+file
         s3file = 'bike-point/'+file
         try:
