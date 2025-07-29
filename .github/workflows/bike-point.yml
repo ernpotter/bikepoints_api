@@ -5,8 +5,8 @@ name: Bike Point Ingestion
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or it will also run every hour.
 on:
-  schedule: 
-    - cron: '0 * * * *'
+  #schedule: 
+  #  - cron: '0 * * * *'
   workflow_dispatch:
   
 
