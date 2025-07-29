@@ -7,7 +7,7 @@ name: Bike Point Ingestion
 on:
   #schedule: 
   #  - cron: '0 * * * *'
-  workflow_dispatch:
+  workflow_dispatch: # this allows you to it the run button
   
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
