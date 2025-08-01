@@ -1,0 +1,25 @@
+id: bike_point_github
+namespace: bike_point_api
+
+tasks:
+  - id: python_scripts
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    tasks:
+      - id: clone_repository
+        type: io.kestra.plugin.git.Clone
+        url: https://github.com/ernpotter/bikepoints_api.git
+        branch: main
+
+      - id: run_python_script
+        type: io.kestra.plugin.scripts.python.Commands
+        taskRunner:
+          type: io.kestra.plugin.scripts.runner.docker.Docker
+        containerImage: python:3.11-slim
+        beforeCommands:
+          - pip install -r requirements.txt
+        commands:
+          - python main.py
+        env:
+          ACCESS_KEY: "{{ kv('AWS_ACCESS_KEY') }}"
+          SECRET_ACCESS_KEY: "{{ kv('AWS_SECRET_ACCESS_KEY') }}"
+          AWS_BUCKET_NAME: "{{ kv('AWS_BUCKET_NAME') }}"
