@@ -1,4 +1,4 @@
-# Bike Point ELT Pipeline
+# Bike Point Pipeline
 
 A lightweight ELT pipeline using **Python**, **Snowflake**, **GitHub Actions**, and **Kestra** to extract and load live bike station data from the **TFL Bike Point API** into your Snowflake warehouse.
 
